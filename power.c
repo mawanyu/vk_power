@@ -22,7 +22,7 @@
 #define PWR_MC_OUT_HI       (25200)
 #define PWR_UI_OUT_LO       (4750)
 #define PWR_UI_OUT_HI       (5250)
-#define PWR_CHARGE          (3000)
+#define PWR_CHARGE_OVER     (3000)
 
 #define PWR_BAT_CHARGE_PIN  (0x80)
 
@@ -49,22 +49,13 @@ static struct {
     unsigned int high;
 } pwr_sys_in_range;
 
+static char pwr_bat_need_charge = 0x0;
+
 /******************************************/
 /* Functions */
 /******************************************/
 
-/********************************************************************
-* Funcion Name
-*     
-* Input Param
-*     
-* Output Param
-*     
-* Return Code
-*     
-* Description
-*     
-********************************************************************/
+
 void pwr_bat_charge_initialise(void)
 {
     /* Select battery charge related pins as GPIO pins(default) */
@@ -81,6 +72,34 @@ void pwr_bat_charge_initialise(void)
 #define pwr_bat_charge_enable   (P2OUT &= PWR_BAT_CHARGE_PIN)
 #define pwr_bat_charge_disable  (P2OUT |= PWR_BAT_CHARGE_PIN)
 
+/********************************************************************
+* Funcion Name
+*     
+* Input Param
+*     
+* Output Param
+*     
+* Return Code
+*     
+* Description
+*     
+********************************************************************/
+void pwr_bat_charge_monitor(void)
+{
+    pwr_bat_charge = adcr_bat_charge * 2500 * 15 / 0x03FF / 10;
+
+    if((pwr_info & PWR_INFO_CHARGE) != 0) {
+        if((pwr_bat_charge > PWR_CHARGE_OVER) || 
+            (pwr_warning & (PWR_WARNING_INTER_FULL + PWR_WARNING_INTER_OVER) != 0))
+        {
+            pwr_bat_charge_disable;
+            pwr_info &= ~PWR_INFO_CHARGE;
+        }
+    }
+    else if ((pwr_warning & PWR_WARNING_AC_IN) == 0) {
+
+    }
+}
 
 void pwr_initialise(void)
 {
@@ -120,6 +139,18 @@ void pwr_monitor(void)
     if((pwr_mc_out < PWR_MC_OUT_LO) || (pwr_mc_out > PWR_MC_OUT_HI)) {
         pwr_warning |= PWR_WARNING_MC;
     }
+
+    pwr_backup_bat = VOLTAGE(adcr_backup_bat);
+    if(pwr_backup_bat < PWR_BACKUP_BAT_LO) {
+        pwr_warning |= PWR_WARNING_BACKUP_LO;
+    }
+    else if(pwr_backup_bat > PWR_BACKUP_BAT_OVER) {
+        pwr_warning |= PWR_WARNING_BACKUP_OVER;
+    }
+    else if(pwr_backup_bat > PWR_BACKUP_BAT_HI) {
+        pwr_warning |= PWR_WARNING_BACKUP_HI;
+    }
+    else {}
 
     pwr_sys_in = VOLTAGE(adcr_sys_in);
 
@@ -176,18 +207,6 @@ void pwr_monitor(void)
             }
         }
     }
-
-    pwr_backup_bat = VOLTAGE(adcr_backup_bat);
-    if(pwr_backup_bat < PWR_BACKUP_BAT_LO) {
-        pwr_warning |= PWR_WARNING_BACKUP_LO;
-    }
-    else if(pwr_backup_bat > PWR_BACKUP_BAT_OVER) {
-        pwr_warning |= PWR_WARNING_BACKUP_OVER;
-    }
-    else if(pwr_backup_bat > PWR_BACKUP_BAT_HI) {
-        pwr_warning |= PWR_WARNING_BACKUP_HI;
-    }
-    else {}
 
     if(pwr_info != pwr_info_new) {
         pwr_info = pwr_info_new;

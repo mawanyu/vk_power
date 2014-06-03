@@ -29,6 +29,7 @@ extern unsigned int pwr_info;
 #define PWR_INFO_SYS_AC             (0x0001)
 #define PWR_INFO_SYS_DC             (0x0002)
 #define PWR_INFO_SYS_INTER          (0x0004)
+#define PWR_INFO_CHARGE             (0x0008)
 
 /******************************************/
 /* Variables */
