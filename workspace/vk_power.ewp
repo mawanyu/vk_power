@@ -1885,7 +1885,19 @@
     </settings>
   </configuration>
   <file>
+    <name>$PROJ_DIR$\..\adc.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\led.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\..\main.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\power.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\timer.c</name>
   </file>
 </project>
 

@@ -5,6 +5,7 @@
 #include "adc.h"
 #include "led.h"
 #include "timer.h"
+#include "power.h"
 
 /******************************************/
 /* Defines and Macros */
@@ -46,8 +47,18 @@ void main(void)
     timer_initialise();
     adc_initialise();
     led_initialise();
+    pwr_initialise();
 
-    
+    /* Start Timer A0 (10Hz) for ADC */
+    timer_a0_start();
+
+    while(1) {
+        while(adc_complete_flag != ADC_COMPLETE_ALL);
+
+        adc_complete_flag = ADC_COMPLETE_NONE;
+        
+        pwr_monitor();
+    }
 }
 
 /********************************************************************

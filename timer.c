@@ -148,7 +148,7 @@ void timer_a1_stop(void)
 * Description
 *     
 ********************************************************************/
-#pragma vector = Timer0_A0_VECTOR
+#pragma vector = TIMER0_A0_VECTOR
 __interrupt void timer_a0_isr(void)
 {
     /* Reset Timer_A0 counter */
@@ -157,16 +157,16 @@ __interrupt void timer_a0_isr(void)
     /* Get ADC result of all channels */
     adc_start(ADC_CH_AC_IN, &adcr_ac_in, 50);
     adc_start(ADC_CH_DC_IN, &adcr_dc_in, 50);
-    adc_start(ADC_CH_BACKUPBAT, &adcr_backup_bat, 50);
-    adc_start(ADC_CH_INTERBAT, &adcr_inter_bat, 50);
-    adc_start(ADC_CH_SYS_IN, &adcr_sys_in, 50);
+    adc_start(ADC_CH_BKBAT, &adcr_bkbat, 50);
+    adc_start(ADC_CH_INBAT, &adcr_inbat, 50);
+    adc_start(ADC_CH_SYS, &adcr_sys_in, 50);
     adc_start(ADC_CH_MC_OUT, &adcr_mc_out, 50);
     adc_start(ADC_CH_UI_OUT, &adcr_ui_out, 50);
     adc_start(ADC_CH_FAN, &adcr_fan, 50);
-    adc_start(ADC_CH_BAT_CHARGE, &adcr_bat_charge, 50);
+    adc_start(ADC_CH_CHG, &adcr_charge, 50);
 
     /* Set complete flag */
-    adc_complete_flag = 0x1;
+    adc_complete_flag = ADC_COMPLETE_ALL;
 }
 
 /********************************************************************
@@ -181,7 +181,7 @@ __interrupt void timer_a0_isr(void)
 * Description
 *     
 ********************************************************************/
-#pragma vector = Timer1_A0_VECTOR
+#pragma vector = TIMER1_A0_VECTOR
 __interrupt void timer_a1_isr(void)
 {
     /* Reset Timer_A1 counter */

@@ -18,6 +18,10 @@
 /******************************************/
 /* Variables */
 /******************************************/
+/* indicate the red alart LED is flashing or not */
+char aled_r_flash_flag = LED_FLASH_OFF;
+/* indicate the yellow alart LED is flashing or not */
+char aled_y_flash_flag = LED_FLASH_ON;
 
 
 /******************************************/

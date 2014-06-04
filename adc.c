@@ -12,18 +12,18 @@
 /* Variables */
 /******************************************/
 /* Following are ADC result of certain signals */
-unsigned int adcr_bat_charge = 0;   /* battery charge I */
-unsigned int adcr_fan = 0;          /* fan V */
-unsigned int adcr_inter_bat = 0;    /* internal battery V */
-unsigned int adcr_backup_bat = 0;   /* backup battery V */
-unsigned int adcr_ac_in = 0;        /* 24V AC/DC input V */
-unsigned int adcr_dc_in = 0;        /* 20V DC/DC(backup battery) input V*/
+unsigned int adcr_charge = 0;       /* battery charge I */
+unsigned int adcr_fan    = 0;       /* fan V */
+unsigned int adcr_inbat  = 0;       /* internal battery V */
+unsigned int adcr_bkbat  = 0;       /* backup battery V */
+unsigned int adcr_ac_in  = 0;       /* 24V AC/DC input V */
+unsigned int adcr_dc_in  = 0;       /* 20V DC/DC(backup battery) input V*/
 unsigned int adcr_sys_in = 0;       /* system DC input V(one of AD/DC, DC/DC, internal battery) */
 unsigned int adcr_mc_out = 0;       /* output V for Main Control Board */
 unsigned int adcr_ui_out = 0;       /* output V for UI Board */
 
 /* This flag indicates all ADC channel have been converted */
-unsigned char adc_complete_flag = 0x0;
+char adc_complete_flag = ADC_COMPLETE_NONE;
 
 /******************************************/
 /* Functions */

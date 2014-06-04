@@ -13,9 +13,9 @@
 /* Variables */
 /******************************************/
 /* indicate the red alart LED is flashing or not */
-unsigned int aled_r_flash_flag;
+extern char aled_r_flash_flag;
 /* indicate the yellow alart LED is flashing or not */
-unsigned int aled_y_flash_flag;
+extern char aled_y_flash_flag;
 
 /******************************************/
 /* Functions */
