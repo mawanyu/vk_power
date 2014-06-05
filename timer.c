@@ -148,11 +148,14 @@ void timer_a1_stop(void)
 * Description
 *     
 ********************************************************************/
-#pragma vector = TIMER0_A0_VECTOR
+#pragma vector = TIMER0_A1_VECTOR
 __interrupt void timer_a0_isr(void)
 {
+    /* Clear interrupt flag */
+    TA0CTL &= ~TAIFG;
+    
     /* Reset Timer_A0 counter */
-    TA0R = 0x0;
+    //TA0R = 0x0;
 
     /* Get ADC result of all channels */
     adc_start(ADC_CH_AC_IN, &adcr_ac_in, 50);
@@ -181,11 +184,14 @@ __interrupt void timer_a0_isr(void)
 * Description
 *     
 ********************************************************************/
-#pragma vector = TIMER1_A0_VECTOR
+#pragma vector = TIMER1_A1_VECTOR
 __interrupt void timer_a1_isr(void)
 {
+    /* Clear interrupt flag */
+    TA1CTL &= ~TAIFG;
+
     /* Reset Timer_A1 counter */
-    TA1R = 0x0;
+    //TA1R = 0x0;
 
     /* Toggle alart red LED */
     if(aled_r_flash_flag == LED_FLASH_ON)
@@ -195,5 +201,4 @@ __interrupt void timer_a1_isr(void)
     if(aled_y_flash_flag == LED_FLASH_ON)
         led_toggle_aled_y();
 }
-
 

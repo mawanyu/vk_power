@@ -20,6 +20,7 @@
 /* Definations of return code */
 #define ADC_RESULT_OK       (0x00)
 #define ADC_RESULT_TIMEOUT  (0x01)
+#define ADC_RESULT_BUSY     (0x02)
 
 /* Definations of ADC complete flag */
 #define ADC_COMPLETE_NONE   (0x00)
