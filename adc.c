@@ -7,16 +7,16 @@
 /* Defines and Macros */
 /******************************************/
 /* Following ADC pins are in Port1 */
-#define ADC_PIN_CHARGE      (0x02)
-#define ADC_PIN_FAN         (0x04)
-#define ADC_PIN_INBAT       (0x08)
-#define ADC_PIN_MC_OUT      (0x10)
-#define ADC_PIN_AC_IN       (0x20)
+#define ADC_PIN_CHARGE      (BIT1)      /* Inter battery charge current */
+#define ADC_PIN_FAN         (BIT2)      /* Fan voltage */
+#define ADC_PIN_INBAT       (BIT3)      /* Inter battery voltage (also a input source for system) */
+#define ADC_PIN_MC_OUT      (BIT4)      /* Output voltage for Main Control Board */
+#define ADC_PIN_AC_IN       (BIT5)      /* AC/DC 24V output voltage (AC input source for system) */
 /* Following ADC pins are in Port3 */
-#define ADC_PIN_DC_IN       (0x01)
-#define ADC_PIN_SYS_IN      (0x02)
-#define ADC_PIN_BKBAT       (0x04)
-#define ADC_PIN_UI_OUT      (0x08)
+#define ADC_PIN_DC_IN       (BIT0)      /* DC/DC 24V output voltage (Backup battery input source for system) */
+#define ADC_PIN_SYS_IN      (BIT1)      /* System input voltage (one of 3 input sources) */
+#define ADC_PIN_BKBAT       (BIT2)      /* Backup battery voltage */
+#define ADC_PIN_UI_OUT      (BIT3)      /* Ouput voltage for UI Board */
 
 /******************************************/
 /* Variables */

@@ -8,12 +8,12 @@
 /* Defines and Macros */
 /******************************************/
 /* ACLED_G_PIN/DCLED_W_PIN/BTLED_B_PIN/ALED_R_PIN are in port3 */
-#define ACLED_G_PIN     (0x80u)
-#define DCLED_W_PIN     (0x40u)
-#define BTLED_B_PIN     (0x20u)
-#define ALED_R_PIN      (0x10u)
+#define ACLED_G_PIN     (BIT7)
+#define DCLED_W_PIN     (BIT6)
+#define BTLED_B_PIN     (BIT5)
+#define ALED_R_PIN      (BIT4)
 /* ALED_Y_PIN is in port2 */
-#define ALED_Y_PIN      (0x40u)
+#define ALED_Y_PIN      (BIT2)
 
 /******************************************/
 /* Variables */

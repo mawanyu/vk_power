@@ -8,47 +8,64 @@
 /******************************************/
 /* Defines and Macros */
 /******************************************/
-#define PWR_AC_IN_LO        (22000)
-#define PWR_AC_IN_HI        (26000)
-#define PWR_DC_IN_LO        (18000)
-#define PWR_DC_IN_HI        (26000)
-#define PWR_BKBAT_LO        (11000)
-#define PWR_BKBAT_HI        (24000)
-#define PWR_BKBAT_OVER      (26000)
-#define PWR_INBAT_LO        (13000)
-#define PWR_INBAT_FULL      (16500)
-#define PWR_INBAT_OVER      (16800)
-#define PWR_FAN_LO          (11000)
-#define PWR_FAN_HI          (13000)
-#define PWR_MC_OUT_LO       (22800)
-#define PWR_MC_OUT_HI       (25200)
-#define PWR_UI_OUT_LO       (4750)
-#define PWR_UI_OUT_HI       (5250)
+/* These definations are to determine if there is a voltage error. */
+/* They are defined by mV. */
+/* Following is valid range of AC/DC 24V output voltage */
+#define PWR_AC_IN_LO        (22000)     /* AC input low threshold */
+#define PWR_AC_IN_HI        (26000)     /* AC input high threshold */
+/* Following is valid range of DC/DC 24V output voltage */
+#define PWR_DC_IN_LO        (18000)     /* DC input low threshold */
+#define PWR_DC_IN_HI        (26000)     /* DC input high threshold */
+/* Following is valid range of backup battery voltage */
+#define PWR_BKBAT_LO        (11000)     /* backup battery low threshold */
+#define PWR_BKBAT_HI        (24000)     /* backup battery high threshold */
+#define PWR_BKBAT_OVER      (26000)     /* backup battery over voltage threshold */
+/* Following is valid range of internal battery voltage */
+#define PWR_INBAT_LO        (13000)     /* internal battery low threshold */
+#define PWR_INBAT_FULL      (16500)     /* internal battery high threshold */
+#define PWR_INBAT_OVER      (17000)     /* internal battery over voltage threshold */
+/* Following is valid range of fan voltage */
+#define PWR_FAN_LO          (11000)     /* fan low threshold */
+#define PWR_FAN_HI          (13000)     /* fan high threshold */
+/* Following is valid range of output voltage for Main Control Board */
+#define PWR_MC_OUT_LO       (22800)     /* MC output low threshold */
+#define PWR_MC_OUT_HI       (25200)     /* MC output high threshold */
+/* Following is valid range of output voltage for UI Board */
+#define PWR_UI_OUT_LO       (4750)     /* UI output low threshold */
+#define PWR_UI_OUT_HI       (5250)     /* UI output high threshold */
 
+/* If internal battery voltage is less than this threshold(mV), it needs to be charged. */
 #define PWR_CHG_LO          (15100)
+/* This is max charge current(mA) for internal battery. */
 #define PWR_CHG_OVER        (3000)
+/* Definations of internal battery charge flag. */
 #define PWR_CHG_NONEED      (0x00)
 #define PWR_CHG_NEED        (0x01)
+/* Control pin to MAX1873. 1 to enable charge, 0 to disable.*/
+#define CHG_EN_PIN          (BIT7)
 
-#define CHG_EN_PIN          (0x80)
-
-#define VOLTAGE(x)  (x * 2500 * 11 / 0x03FF)
+/* Translate ADC result to real voltage(mV). */
+#define VOLTAGE(x)  (unsigned int)((unsigned long)x * 2500 * 11 / 0x03FF)
 
 /******************************************/
 /* Variables */
 /******************************************/
-unsigned int pwr_ac_in = 0;
-unsigned int pwr_dc_in = 0;
-unsigned int pwr_bkbat = 0;
-unsigned int pwr_inbat = 0;
-unsigned int pwr_sys = 0;
-unsigned int pwr_mc_out = 0;
-unsigned int pwr_ui_out = 0;
-unsigned int pwr_fan = 0;
+/* Followings are to store real voltage(mV) of channels. */
+unsigned int pwr_ac_in  = 0;        /* AC/DC 24V output voltage */
+unsigned int pwr_dc_in  = 0;        /* DC/DC 24V output voltage */
+unsigned int pwr_bkbat  = 0;        /* backup battery voltage */
+unsigned int pwr_inbat  = 0;        /* internal battery voltage */
+unsigned int pwr_sys    = 0;        /* system input voltage */
+unsigned int pwr_mc_out = 0;        /* output voltage for Main Control Board */
+unsigned int pwr_ui_out = 0;        /* output voltage for UI Board */
+unsigned int pwr_fan    = 0;        /* fan voltage */
 
+/* Internal battery charge current(mA) */
 unsigned int pwr_charge = 0;
 
+/* Flags of power warnings and alarts */
 unsigned int pwr_warning = 0x0;
+/* Flags of power informations */
 unsigned int pwr_info = 0x0;
 
 static struct {
@@ -56,12 +73,25 @@ static struct {
     unsigned int high;
 } pwr_sys_range;
 
+/* Flag indicates if internal battery need charge or not */
 static char pwr_need_charge = PWR_CHG_NONEED;
 
 /******************************************/
 /* Functions */
 /******************************************/
 
+/********************************************************************
+* Funcion Name
+*     
+* Input Param
+*     
+* Output Param
+*     
+* Return Code
+*     
+* Description
+*     
+********************************************************************/
 void pwr_charge_initialise(void)
 {
     /* Select battery charge related pins as GPIO pins(default) */
@@ -92,8 +122,11 @@ void pwr_charge_initialise(void)
 ********************************************************************/
 void pwr_charge_monitor(void)
 {
-    pwr_charge = adcr_charge * 2500 * 15 / 0x03FF / 10;
+    /* Calculate internal battery charge current(mA). */ 
+    pwr_charge = (unsigned int)((unsigned long)adcr_charge * 2500 * 15 / 0x03FF / 10);
 
+    /* Internal battery is charging. If it is full, or over charge, */
+    /* or AC input is incorrect, stop charge. */
     if((pwr_info & PWR_INFO_CHG) != 0) {
         if((pwr_charge > PWR_CHG_OVER) || 
             ((pwr_warning & PWR_WARNING_INBAT_FULL) != 0) ||
@@ -101,14 +134,18 @@ void pwr_charge_monitor(void)
             ((pwr_warning & PWR_WARNING_AC_IN) != 0))
         {
             pwr_charge_disable;
+            /* update information flag */
             pwr_info &= ~PWR_INFO_CHG;
         }
     }
+    /* Internal battery is not charging. If it needs charge and AC input is */
+    /* correct, start charge. */
     else {
         if(((pwr_warning & PWR_WARNING_AC_IN) == 0) &&
             (pwr_need_charge == PWR_CHG_NEED))
         {
             pwr_charge_enable;
+            /* update information flag */
             pwr_info |= PWR_INFO_CHG;
         }   
     }

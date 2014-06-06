@@ -30,7 +30,7 @@
 /* Variables */
 /******************************************/
 /* Following are ADC result of certain signals */
-extern unsigned int adcr_charge;    /* battery charge I */
+extern unsigned int adcr_charge;        /* battery charge I */
 extern unsigned int adcr_fan;           /* fan V */
 extern unsigned int adcr_inbat;         /* internal battery V */
 extern unsigned int adcr_bkbat;         /* backup battery V */
@@ -49,3 +49,5 @@ extern char adc_complete_flag;
 extern void adc_initialise(void);
 extern unsigned int adc_start(unsigned int adc_signal, unsigned int * result,
                                 unsigned int timeout);
+
+
