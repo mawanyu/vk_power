@@ -64,21 +64,22 @@ void adc_initialise(void)
     
     /* Set ADC clock(4MHz). Source by ACLK, divided by 1. */
     /* Set ADC to single-channel-single-convertion mode, trigger by ADC10SC bit. */
-    ADC10CTL1 = ADC10SHS_0 + ADC10DIV_0 + ADC10SSEL_1 + ADC10CONSEQ_0;
-
+    ADC10CTL1 = ADC10SHS_0 + ADC10DIV_0 + ADC10SSEL_1 + ADC10CONSEQ_0 + ADC10SHP;
     /* Set ADC to 10 bits result. */
     ADC10CTL2 = ADC10PDIV__1 + ADC10RES;
-
-    /* Initialise REF module to set ADC reference voltage to 2.5V. */
-    /* It should automatically be on when ADC10 requests. */
-    REFCTL0 |= REFVSEL_2 + REFON;
+    /* Set sampling time to 1024 ADC clocks. */
+    /* Enable ADC_10 module. */
+    ADC10CTL0 |= ADC10ON + ADC10SHT_15;
 
     /* Enable ADC_10 interrupt. */
     //ADC10IE = ADC10IE0;
 
-    /* Enable ADC_10 module. */
     /* Enable convertion and lock some configure bits. */
-    ADC10CTL0 = ADC10ON + ADC10ENC;
+    ADC10CTL0 |= ADC10ENC;
+
+    /* Initialise REF module to set ADC reference voltage to 2.5V. */
+    /* It should automatically be on when ADC10 requests. */
+    REFCTL0 |= REFVSEL_2;
 }
 
 /********************************************************************
@@ -111,9 +112,9 @@ unsigned int adc_start(unsigned int adc_signal, unsigned int *result,
     
     /* Start sample and convert. */
     ADC10CTL0 |= ADC10SC + ADC10ENC;
-
+    
     /* Wait for complete. */
-    while(((ADC10IFG & ADC10IFG0) != 0x0) && (timeout > 0)) {
+    while(((ADC10IFG & ADC10IFG0) == 0x0) && (timeout > 0)) {
         timeout--;
     }
 
