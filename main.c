@@ -49,6 +49,19 @@ void main(void)
     led_initialise();
     pwr_initialise();
 
+/*
+    while(1) {
+        adc_start(ADC_CH_AC_IN, &adcr_ac_in, 500);
+        adc_start(ADC_CH_DC_IN, &adcr_dc_in, 50);
+        adc_start(ADC_CH_BKBAT, &adcr_bkbat, 50);
+        adc_start(ADC_CH_INBAT, &adcr_inbat, 50);
+        adc_start(ADC_CH_SYS, &adcr_sys_in, 50);
+        adc_start(ADC_CH_MC_OUT, &adcr_mc_out, 50);
+        adc_start(ADC_CH_UI_OUT, &adcr_ui_out, 50);
+        adc_start(ADC_CH_FAN, &adcr_fan, 50);
+        adc_start(ADC_CH_CHG, &adcr_charge, 50);
+    }
+*/    
     /* Start Timer A0 (10Hz) for ADC */
     timer_a0_start();
 
