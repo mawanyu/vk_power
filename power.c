@@ -48,7 +48,7 @@
 #define VOLTAGE(x)  ((unsigned long)x * 2500 * 11 / 0x03FF)
 
 /* Voltage value sum times */
-#define VSUM_CNT        (10)
+#define VSUM_CNT        (5)
 
 /******************************************/
 /* Variables */
