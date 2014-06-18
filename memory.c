@@ -154,6 +154,7 @@ int mem_erase(char* mem_addr, int size)
     /* Erase whole valid memory */
     while(ecnt < size) {
         *(ers_addr++) = 0x00;
+        ecnt++;
     }
     return ecnt;
 }

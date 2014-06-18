@@ -6,8 +6,9 @@
 /******************************************/
 /* Defines and Macros */
 /******************************************/
-/* Memory size are calculated as byte. */
-#define MEM_SIZE            (2048)
+/* Memory size are calculated as byte. It should be multiple of 512. */
+#define MEM_SIZE            (1024)
+/* Memory adress align by 512. */
 #define MEM_START_ADDR      (0xF000)
 #define MEM_END_ADDR        (0xF3FF)
 
