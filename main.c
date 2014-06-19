@@ -6,6 +6,7 @@
 #include "led.h"
 #include "timer.h"
 #include "power.h"
+#include "memory.h"
 
 /******************************************/
 /* Defines and Macros */
@@ -48,6 +49,32 @@ void main(void)
     adc_initialise();
     led_initialise();
     pwr_initialise();
+    mem_initialise();
+
+#if 0
+    {
+        int cnt = 0;
+        char w[256];
+        char r[256];
+        char* addr = (char*)MEM_START_ADDR;
+#if 1        
+        while(cnt < 256) {
+            w[cnt] = cnt;
+            mem_write(addr, 1, &w[cnt]);
+            mem_read(addr, 1, &r[cnt]);
+            cnt++;
+            addr++;
+        }
+
+        mem_clean();
+#endif
+        addr = (char*)MEM_START_ADDR;
+        mem_read(addr, 256, r);
+        mem_write(addr+256, 256, w);
+        mem_read(addr, 256, r);
+        while(1);
+    }
+#endif
 
 /*
     while(1) {

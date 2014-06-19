@@ -1589,7 +1589,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>templproj.txt</state>
+          <state>vk_power.txt</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1892,6 +1892,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\..\main.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\memory.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\..\power.c</name>
