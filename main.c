@@ -76,9 +76,18 @@ void main(void)
     }
 #endif
 
-/*
+    /* Start Timer A0 (10Hz) for ADC */
+    timer_a0_start();
+
     while(1) {
-        adc_start(ADC_CH_AC_IN, &adcr_ac_in, 500);
+        /* Wait for timer interrupt. */
+        while(timer_a0_int_flag == 0x0);
+
+        /* Clear timer flag. */
+        timer_a0_int_flag = 0x0;
+
+        /* Get ADC result of all channels */
+        adc_start(ADC_CH_AC_IN, &adcr_ac_in, 50);
         adc_start(ADC_CH_DC_IN, &adcr_dc_in, 50);
         adc_start(ADC_CH_BKBAT, &adcr_bkbat, 50);
         adc_start(ADC_CH_INBAT, &adcr_inbat, 50);
@@ -87,16 +96,8 @@ void main(void)
         adc_start(ADC_CH_UI_OUT, &adcr_ui_out, 50);
         adc_start(ADC_CH_FAN, &adcr_fan, 50);
         adc_start(ADC_CH_CHG, &adcr_charge, 50);
-    }
-*/    
-    /* Start Timer A0 (10Hz) for ADC */
-    timer_a0_start();
 
-    while(1) {
-        while(adc_complete_flag != ADC_COMPLETE_ALL);
-
-        adc_complete_flag = ADC_COMPLETE_NONE;
-        
+        /* Start power monitor. */
         pwr_monitor();
     }
 }

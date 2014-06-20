@@ -3,7 +3,7 @@
 /*******************************************/
 #include "timer.h"
 #include "led.h"
-#include "adc.h"
+//#include "adc.h"
 
 /******************************************/
 /* Defines and Macros */
@@ -17,7 +17,8 @@
 /******************************************/
 /* Variables */
 /******************************************/
-
+/* Indicate Timer_A0 interrupt occured. */
+char timer_a0_int_flag = 0x0;
 
 /******************************************/
 /* Functions */
@@ -157,19 +158,8 @@ __interrupt void timer_a0_isr(void)
     /* Reset Timer_A0 counter */
     //TA0R = 0x0;
 
-    /* Get ADC result of all channels */
-    adc_start(ADC_CH_AC_IN, &adcr_ac_in, 50);
-    adc_start(ADC_CH_DC_IN, &adcr_dc_in, 50);
-    adc_start(ADC_CH_BKBAT, &adcr_bkbat, 50);
-    adc_start(ADC_CH_INBAT, &adcr_inbat, 50);
-    adc_start(ADC_CH_SYS, &adcr_sys_in, 50);
-    adc_start(ADC_CH_MC_OUT, &adcr_mc_out, 50);
-    adc_start(ADC_CH_UI_OUT, &adcr_ui_out, 50);
-    adc_start(ADC_CH_FAN, &adcr_fan, 50);
-    adc_start(ADC_CH_CHG, &adcr_charge, 50);
-
     /* Set complete flag */
-    adc_complete_flag = ADC_COMPLETE_ALL;
+    timer_a0_int_flag = 0x1;
 }
 
 /********************************************************************

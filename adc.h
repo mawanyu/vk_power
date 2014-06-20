@@ -23,8 +23,8 @@
 #define ADC_RESULT_BUSY     (0x02)
 
 /* Definations of ADC complete flag */
-#define ADC_COMPLETE_NONE   (0x00)
-#define ADC_COMPLETE_ALL    (0x01)
+//#define ADC_COMPLETE_NONE   (0x00)
+//#define ADC_COMPLETE_ALL    (0x01)
 
 /******************************************/
 /* Variables */
@@ -41,7 +41,7 @@ extern unsigned int adcr_mc_out;        /* output V for Main Control Board */
 extern unsigned int adcr_ui_out;        /* output V for UI Board */
 
 /* This flag indicates all ADC channel have been converted */
-extern char adc_complete_flag;
+//extern char adc_complete_flag;
 
 /******************************************/
 /* Functions */

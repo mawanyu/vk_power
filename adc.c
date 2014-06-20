@@ -33,7 +33,7 @@ unsigned int adcr_mc_out = 0;       /* output V for Main Control Board */
 unsigned int adcr_ui_out = 0;       /* output V for UI Board */
 
 /* This flag indicates all ADC channel have been converted */
-char adc_complete_flag = ADC_COMPLETE_NONE;
+//char adc_complete_flag = ADC_COMPLETE_NONE;
 
 /******************************************/
 /* Functions */

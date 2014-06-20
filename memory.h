@@ -35,9 +35,9 @@
 * Description
 *     
 ********************************************************************/
-void mem_initialise(void);
-int mem_read(char * mem_addr,int size,char * rdata);
-int mem_write(char * mem_addr,int size,char * wdata);
-int mem_erase(char * mem_addr,int size);
-int mem_clean(void);
+extern void mem_initialise(void);
+extern int mem_read(char * mem_addr,int size,char * rdata);
+extern int mem_write(char * mem_addr,int size,char * wdata);
+extern int mem_erase(char * mem_addr,int size);
+extern int mem_clean(void);
 

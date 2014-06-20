@@ -7,8 +7,6 @@
 /* Defines and Macros */
 /******************************************/
 
-/* Flags of power warnings and alarts */
-extern unsigned int pwr_warning;
 /* Following are definations of power warnings and alarts */
 #define PWR_WARNING_FAN         (0x0001)    /* Fan voltage warning */
 #define PWR_WARNING_MC          (0x0002)    /* Main Control Board output voltage warning */
@@ -25,8 +23,6 @@ extern unsigned int pwr_warning;
 #define PWR_WARNING_SYS_DC      (0x1000)    /* DC to system channel warning */
 #define PWR_WARNING_SYS_INBAT   (0x2000)    /* Internal battery to system channel warning */
 
-/* Flags of power informations */
-extern unsigned int pwr_info;
 /* Following are definations of power informations */
 #define PWR_INFO_SYS_AC         (0x0001)    /* System power sourced by AC 24V */
 #define PWR_INFO_SYS_DC         (0x0002)    /* System power sourced by DC(backup battery) 20V */
@@ -38,7 +34,24 @@ extern unsigned int pwr_info;
 /******************************************/
 /* Variables */
 /******************************************/
+/* Flags of power warnings and alarts */
+extern unsigned int pwr_warning;
 
+/* Flags of power informations */
+extern unsigned int pwr_info;
+
+/* Voltage value. */
+extern unsigned int pwr_ac_in;         /* AC/DC 24V output voltage */
+extern unsigned int pwr_dc_in;         /* DC/DC 24V output voltage */
+extern unsigned int pwr_bkbat;         /* backup battery voltage */
+extern unsigned int pwr_inbat;         /* internal battery voltage */
+extern unsigned int pwr_sys;           /* system input voltage */
+extern unsigned int pwr_mc_out;        /* output voltage for Main Control Board */
+extern unsigned int pwr_ui_out;        /* output voltage for UI Board */
+extern unsigned int pwr_fan;           /* fan voltage */
+
+/* Internal battery charge current(mA) */
+extern unsigned int pwr_charge;
 
 /******************************************/
 /* Functions */

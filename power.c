@@ -54,7 +54,7 @@
 /* Variables */
 /******************************************/
 /* Followings are to store real voltage(mV) of channels. */
-/* They are the average value of 10 times summary. */
+/* They are the average value. */
 unsigned int pwr_ac_in  = 0;        /* AC/DC 24V output voltage */
 unsigned int pwr_dc_in  = 0;        /* DC/DC 24V output voltage */
 unsigned int pwr_bkbat  = 0;        /* backup battery voltage */
@@ -63,7 +63,7 @@ unsigned int pwr_sys    = 0;        /* system input voltage */
 unsigned int pwr_mc_out = 0;        /* output voltage for Main Control Board */
 unsigned int pwr_ui_out = 0;        /* output voltage for UI Board */
 unsigned int pwr_fan    = 0;        /* fan voltage */
-/* These are temporary value to sum 10Hz sampling value. */
+/* These are summation value of 10Hz sampling value. */
 unsigned long pwr_ac_in_t  = 0;        /* AC/DC 24V output voltage */
 unsigned long pwr_dc_in_t  = 0;        /* DC/DC 24V output voltage */
 unsigned long pwr_bkbat_t  = 0;        /* backup battery voltage */
@@ -89,6 +89,9 @@ unsigned int pwr_info = 0x0;
 /******************************************/
 /* Functions */
 /******************************************/
+
+static char pwr_translate(void);
+static void pwr_detect_source(void);
 
 /********************************************************************
 * Funcion Name
@@ -276,7 +279,7 @@ static char pwr_translate(void)
 * Description
 *     
 ********************************************************************/
-void pwr_detect_source(void)
+static void pwr_detect_source(void)
 {
     /*The power sources priority. High voltage source has high priority. */
     struct {
