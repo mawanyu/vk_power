@@ -21,7 +21,7 @@
 /* indicate the red alart LED is flashing or not */
 char aled_r_flash_flag = LED_FLASH_OFF;
 /* indicate the yellow alart LED is flashing or not */
-char aled_y_flash_flag = LED_FLASH_ON;
+char aled_y_flash_flag = LED_FLASH_OFF;
 
 
 /******************************************/
@@ -49,8 +49,8 @@ void led_initialise(void)
     P2SEL1 &= ~ALED_Y_PIN;
 
     /* Select LED related pins as output */
-    P3DIR = ACLED_G_PIN + DCLED_W_PIN + BTLED_B_PIN + ALED_R_PIN;
-    P2DIR = ALED_Y_PIN;
+    P3DIR |= ACLED_G_PIN + DCLED_W_PIN + BTLED_B_PIN + ALED_R_PIN;
+    P2DIR |= ALED_Y_PIN;
 
     /* Turn on all LEDs */
     P3OUT |= ACLED_G_PIN + DCLED_W_PIN + BTLED_B_PIN + ALED_R_PIN;

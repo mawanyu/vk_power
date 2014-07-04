@@ -76,6 +76,25 @@ void main(void)
     }
 #endif
 
+//    int i = 0;
+
+    led_acled_off();
+    led_dcled_off();
+    led_btled_off();
+//    led_flash_aled_r(LED_FLASH_ON);
+//    led_flash_aled_y(LED_FLASH_ON);
+//    for(i=0;i<500;i++)
+//        DELAY_MSEC(10);
+//    led_flash_aled_r(LED_FLASH_OFF);
+//    for(i=0;i<500;i++)
+//        DELAY_MSEC(10);
+//    led_flash_aled_y(LED_FLASH_OFF);
+//    for(i=0;i<500;i++)
+//        DELAY_MSEC(10);
+    led_aled_r_off();
+    led_aled_y_off();
+
+
     /* Start Timer A0 (10Hz) for ADC */
     timer_a0_start();
 

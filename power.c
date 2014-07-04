@@ -112,13 +112,13 @@ void pwr_charge_initialise(void)
     P2SEL1 &= ~CHG_EN_PIN;
 
     /* Select battery charge related pins as output */
-    P2DIR = CHG_EN_PIN;
+    P2DIR |= CHG_EN_PIN;
 
     /* Disable battery charge */
     P2OUT |= CHG_EN_PIN;
 }
 
-#define pwr_charge_enable   (P2OUT &= CHG_EN_PIN)
+#define pwr_charge_enable   (P2OUT &= ~CHG_EN_PIN)
 #define pwr_charge_disable  (P2OUT |= CHG_EN_PIN)
 
 /********************************************************************
@@ -288,9 +288,9 @@ static void pwr_detect_source(void)
         char third;     /* Lowest priority */
     } source_pri;
 
-    unsigned int diff_v_ac = 0;         /* AC channel drop voltage */
-    unsigned int diff_v_dc = 0;         /* DC(backup battery) channel drop voltage */
-    unsigned int diff_v_inbat = 0;      /* Internal battery channel drop voltage */
+    int diff_v_ac = 0;         /* AC channel drop voltage */
+    int diff_v_dc = 0;         /* DC(backup battery) channel drop voltage */
+    int diff_v_inbat = 0;      /* Internal battery channel drop voltage */
     
     unsigned int pwr_info_new = 0x0;    /* Temp save of power information flags */
 
@@ -332,16 +332,16 @@ static void pwr_detect_source(void)
     }
 
     /* Get drop voltage of channels. */
-    diff_v_ac = pwr_ac_in - pwr_sys;
-    diff_v_dc = pwr_dc_in - pwr_sys;
-    diff_v_inbat = pwr_inbat - pwr_sys;
+    diff_v_ac = (int)pwr_ac_in - (int)pwr_sys;
+    diff_v_dc = (int)pwr_dc_in - (int)pwr_sys;
+    diff_v_inbat = (int)pwr_inbat - (int)pwr_sys;
 
     /* Judge which source supplies the system voltage. */
-    /* If drop voltage is in correct range(0mV-700mV), this source supplies */
+    /* If drop voltage is in correct range(+-700mV), this source supplies */
     /* the system. Then if this source is not the highest priority, the higher */
     /* priority source channels are incorrect, the warning flags should be set. */
     /* System is supplied by AC */
-    if((diff_v_ac > 0) && (diff_v_ac < 700)) {
+    if((diff_v_ac > -700) && (diff_v_ac < 700)) {
         pwr_info_new |= PWR_INFO_SYS_AC;
         /* If DC is highest priority, it is incorrect. */
         if(PRI_DC == source_pri.first) {
@@ -361,7 +361,7 @@ static void pwr_detect_source(void)
         }
     }
     /* System is supplied by DC */
-    else if((diff_v_dc > 0) && (diff_v_dc < 700)) {
+    else if((diff_v_dc > -700) && (diff_v_dc < 700)) {
         pwr_info_new |= PWR_INFO_SYS_DC;
         /* If AC is highest priority, it is incorrect. */
         if(PRI_AC == source_pri.first) {
@@ -381,7 +381,7 @@ static void pwr_detect_source(void)
         }
     }
     /* System is supplied by internal battery */
-    else if((diff_v_inbat > 0) && (diff_v_inbat < 700)) {
+    else if((diff_v_inbat > -700) && (diff_v_inbat < 700)) {
         pwr_info_new |= PWR_INFO_SYS_INBAT;
         /* If AC is highest priority, it is incorrect. */
         if(PRI_AC == source_pri.first) {
@@ -407,8 +407,8 @@ static void pwr_detect_source(void)
 
     /* If power information of source is changed, then refresh the information flags, */
     /* and change the LED. */
-    if(pwr_info_new != 
-       (pwr_info & (PWR_INFO_SYS_AC + PWR_INFO_SYS_DC + PWR_INFO_SYS_INBAT)))
+//    if(pwr_info_new != 
+//       (pwr_info & (PWR_INFO_SYS_AC + PWR_INFO_SYS_DC + PWR_INFO_SYS_INBAT)))
     {
         pwr_info &= ~(PWR_INFO_SYS_AC + PWR_INFO_SYS_DC + PWR_INFO_SYS_INBAT);
         pwr_info |= pwr_info_new;
